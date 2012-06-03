@@ -17,14 +17,12 @@
  * under the License.
  */
 
-package thrift_test
+package thrift
 
 import (
   "testing"
-  . "thrift"
 )
 
-func TestFramedTransport(t *testing.T) {
-  trans := NewTFramedTransport(NewTMemoryBuffer())
-  TransportTest(t, trans, trans)
+func TestReadWriteBinaryProtocol(t *testing.T) {
+  ReadWriteProtocolTest(t, NewTBinaryProtocolFactoryDefault())
 }

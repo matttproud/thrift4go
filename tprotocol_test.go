@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package thrift_test
+package thrift
 
 import (
   "bytes"
@@ -27,7 +27,6 @@ import (
   "net"
   "net/http"
   "testing"
-  . "thrift"
 )
 
 const PROTOCOL_BINARY_DATA_SIZE = 155

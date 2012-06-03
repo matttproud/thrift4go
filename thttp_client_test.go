@@ -17,26 +17,21 @@
  * under the License.
  */
 
-package thrift_test
+package thrift
 
 import (
   "testing"
-  . "thrift"
 )
 
-func TestTApplicationException(t *testing.T) {
-  exc := NewTApplicationException(UNKNOWN_APPLICATION_EXCEPTION, "")
-  if exc.Error() != "" {
-    t.Fatalf("Expected empty string for exception but found '%s'", exc.Error())
+func TestHttpClient(t *testing.T) {
+  l, addr := HttpClientSetupForTest(t)
+  if l != nil {
+    defer l.Close()
   }
-  if exc.TypeId() != UNKNOWN_APPLICATION_EXCEPTION {
-    t.Fatalf("Expected type UNKNOWN for exception but found '%s'", exc.TypeId())
+  trans, err := NewTHttpPostClient("http://" + addr.String())
+  if err != nil {
+    l.Close()
+    t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
   }
-  exc = NewTApplicationException(WRONG_METHOD_NAME, "junk_method")
-  if exc.Error() != "junk_method" {
-    t.Fatalf("Expected 'junk_method' for exception but found '%s'", exc.Error())
-  }
-  if exc.TypeId() != WRONG_METHOD_NAME {
-    t.Fatalf("Expected type WRONG_METHOD_NAME for exception but found '%s'", exc.TypeId())
-  }
+  TransportTest(t, trans, trans)
 }

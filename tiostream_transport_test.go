@@ -17,22 +17,14 @@
  * under the License.
  */
 
-package thrift_test
+package thrift
 
 import (
+  "bytes"
   "testing"
-  . "thrift"
 )
 
-func TestHttpClient(t *testing.T) {
-  l, addr := HttpClientSetupForTest(t)
-  if l != nil {
-    defer l.Close()
-  }
-  trans, err := NewTHttpPostClient("http://" + addr.String())
-  if err != nil {
-    l.Close()
-    t.Fatalf("Unable to connect to %s: %s", addr.String(), err)
-  }
+func TestIOStreamTransport(t *testing.T) {
+  trans := NewTIOStreamTransportRW(bytes.NewBuffer(make([]byte, 0, 1024)))
   TransportTest(t, trans, trans)
 }

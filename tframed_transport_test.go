@@ -17,15 +17,13 @@
  * under the License.
  */
 
-package thrift_test
+package thrift
 
 import (
-  "bytes"
   "testing"
-  . "thrift"
 )
 
-func TestIOStreamTransport(t *testing.T) {
-  trans := NewTIOStreamTransportRW(bytes.NewBuffer(make([]byte, 0, 1024)))
+func TestFramedTransport(t *testing.T) {
+  trans := NewTFramedTransport(NewTMemoryBuffer())
   TransportTest(t, trans, trans)
 }
