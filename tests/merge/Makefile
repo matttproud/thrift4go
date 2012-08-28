@@ -1,17 +1,15 @@
-THRIFT_ARCHIVE_URL = https://dist.apache.org/repos/dist/release/thrift/0.8.0/thrift-0.8.0.tar.gz
 TEST_ARTIFACTS = \
   test-compilation-stamp \
-	test-configuration-stamp \
+  test-configuration-stamp \
   test-installation-stamp \
   test-merge-stamp \
   test-stamp \
-  thrift-0.8.0 \
-  thrift-0.8.0.tar.gz \
-  thrift-extraction-stamp \
+  thrift \
+  thrift-fetch-stamp \
   tree \
   tree-stamp
 
-export THRIFT=$(CURDIR)/thrift-0.8.0
+export THRIFT=$(CURDIR)/thrift
 export THRIFT4GO=$(CURDIR)/../..
 
 all: test
@@ -21,7 +19,7 @@ test: test-stamp
 test-stamp: test-installation-stamp
 	touch $@
 
-test-merge-stamp: thrift-extraction-stamp
+test-merge-stamp: thrift-fetch-stamp
 	cd $(THRIFT4GO) && bash ./scripts/merge_and_build.sh -b
 	touch $@
 
@@ -50,11 +48,8 @@ tree-stamp:
 	mkdir -vp tree
 	touch $@
 
-thrift-0.8.0.tar.gz:
-	wget https://dist.apache.org/repos/dist/release/thrift/0.8.0/thrift-0.8.0.tar.gz
-
-thrift-extraction-stamp: thrift-0.8.0.tar.gz
-	tar xzvf thrift-0.8.0.tar.gz
+thrift-fetch-stamp:
+	svn co http://svn.apache.org/repos/asf/thrift/trunk thrift
 	touch $@
 
 clean:
